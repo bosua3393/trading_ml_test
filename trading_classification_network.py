@@ -1,19 +1,18 @@
-from data import sorted_data
+from data import eth_sorted
 import tensorflow as tf
 from numpy import array_split
 
 data_x, data_label = eth_sorted.batch_x, eth_sorted.batch_label
-
 section = 25
 
-train_loop = 200000
-learn_rate = .0001
-check_rate = 1000
+train_loop = 10000
+learn_rate = .01
+check_rate = 200
 
 n_input = 300
-n_hidden1 = 10
-n_hidden2 = 10
-n_hidden3 = 10
+n_hidden1 = 100
+n_hidden2 = 100
+n_hidden3 = 100
 n_output = 2
 
 x = tf.placeholder(tf.float32, [None, n_input], name='x')
@@ -42,10 +41,13 @@ with tf.name_scope(name='layer4'):
 loss = tf.losses.sigmoid_cross_entropy(label, y4)
 train_method = tf.train.GradientDescentOptimizer(learn_rate).minimize(loss)
 
-loss_scalar = tf.summary.scalar("loss", loss)
 
 correct_pred = tf.equal(tf.argmax(y4, 1), tf.argmax(label, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+
+loss_scalar = tf.summary.scalar("loss", loss)
+accuracy_scalar = tf.summary.scalar("accuracy", accuracy)
+
 
 saver = tf.train.Saver()
 
@@ -58,8 +60,10 @@ with tf.Session() as sess:
         for batch in range(len(batch_x)):
             sess.run(train_method, {x: batch_x[batch], label: batch_label[batch]})
         if step % check_rate == 0:
-            summary = sess.run(loss_scalar, {x: data_x, label: data_label})
-            writer.add_summary(summary, step)
+            loss_summary = sess.run(loss_scalar, {x: data_x, label: data_label})
+            accuracy_summary = sess.run(accuracy_scalar, {x: data_x, label: data_label})
+            writer.add_summary(loss_summary, step)
+            writer.add_summary(accuracy_summary, step)
             print("Step:", step, " Loss:", sess.run(loss, {x: data_x, label: data_label}), " Accuracy:", sess.run(accuracy, {x: data_x, label: data_label}))
 
     saver.save(sess, "./model/model.ckpt")

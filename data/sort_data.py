@@ -1,13 +1,13 @@
-import eth_data
+import btc_data
 
-data = eth_data.data
+data = btc_data.data
 
 size_batch = 300
 data_size = len(data)
 n_batch = 5000
 predict = 24
 
-f = open("eth_sorted.py", "w+")
+#f = open("btc_sorted.py", "w+")
 f.write('batch_x = [[')
 for batch in range(n_batch):
     small = data[batch]
