@@ -7,7 +7,7 @@ data_size = len(data)
 n_batch = 5000
 predict = 24
 
-f = open("sorted_data.py", "w+")
+f = open("eth_sorted.py", "w+")
 f.write('batch_x = [[')
 for batch in range(n_batch):
     small = data[batch]
