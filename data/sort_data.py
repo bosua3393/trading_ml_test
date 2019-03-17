@@ -1,13 +1,13 @@
-import btc_data
+import eth_data
 
-data = btc_data.data
+data = eth_data.data
 
 size_batch = 300
 data_size = len(data)
 n_batch = 5000
 predict = 24
 
-#f = open("btc_sorted.py", "w+")
+# f = open("eth_3label.py", "w+")
 f.write('batch_x = [[')
 for batch in range(n_batch):
     small = data[batch]
@@ -37,10 +37,14 @@ for batch in range(n_batch):
     last_element = data[batch + size_batch]
     future_element = data[batch + size_batch + predict]
     normalize_element = future_element/last_element
-    if normalize_element > 1:
-        f.write('1, 0')
+
+    if normalize_element > 1.05:
+        f.write('1, 0, 0')
+    elif normalize_element < .95:
+        f.write('0, 0, 1')
     else:
-        f.write('0, 1')
+        f.write('0, 1, 0')
+
     if batch == n_batch-1:
         f.write(']]')
     else:

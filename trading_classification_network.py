@@ -3,16 +3,16 @@ import tensorflow as tf
 from numpy import array_split
 
 data_x, data_label = eth_sorted.batch_x, eth_sorted.batch_label
-section = 25
+section = 1
 
-train_loop = 10000
+train_loop = 50000
 learn_rate = .01
-check_rate = 200
+check_rate = 500
 
 n_input = 300
-n_hidden1 = 100
-n_hidden2 = 100
-n_hidden3 = 100
+n_hidden1 = 10
+n_hidden2 = 10
+n_hidden3 = 10
 n_output = 2
 
 x = tf.placeholder(tf.float32, [None, n_input], name='x')
@@ -37,6 +37,7 @@ with tf.name_scope(name='layer4'):
     w4 = tf.Variable(tf.random_uniform((n_hidden3, n_output), -1, 1), name='weight4')
     b4 = tf.Variable(tf.random_uniform((1, n_output), -1, 1), name='bias4')
     y4 = tf.nn.softmax(tf.matmul(y3, w4) + b4, name='layer4')
+
 
 loss = tf.losses.sigmoid_cross_entropy(label, y4)
 train_method = tf.train.GradientDescentOptimizer(learn_rate).minimize(loss)
