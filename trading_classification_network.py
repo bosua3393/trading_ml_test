@@ -4,11 +4,11 @@ from numpy import array_split
 
 data_x, data_label = sorted_data.batch_x, sorted_data.batch_label
 
-section = 10
+section = 25
 
-train_loop = 20000
-learn_rate = .001
-check_rate = 100
+train_loop = 200000
+learn_rate = .0001
+check_rate = 1000
 
 n_input = 300
 n_hidden1 = 10
@@ -47,6 +47,8 @@ loss_scalar = tf.summary.scalar("loss", loss)
 correct_pred = tf.equal(tf.argmax(y4, 1), tf.argmax(label, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
+saver = tf.train.Saver()
+
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     writer = tf.summary.FileWriter('./graph', graph=tf.get_default_graph())
@@ -59,3 +61,6 @@ with tf.Session() as sess:
             summary = sess.run(loss_scalar, {x: data_x, label: data_label})
             writer.add_summary(summary, step)
             print("Step:", step, " Loss:", sess.run(loss, {x: data_x, label: data_label}), " Accuracy:", sess.run(accuracy, {x: data_x, label: data_label}))
+
+    saver.save(sess, "./model/model.ckpt")
+

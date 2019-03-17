@@ -4,7 +4,7 @@ data = eth_data.data
 
 size_batch = 300
 data_size = len(data)
-n_batch = 1000
+n_batch = 5000
 predict = 24
 
 f = open("sorted_data.py", "w+")
