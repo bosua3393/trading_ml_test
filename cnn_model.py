@@ -1,5 +1,7 @@
 import tensorflow as tf
 from data import btc_sorted
+from data import btc_data
+
 
 batch_x, batch_label = btc_sorted.batch_x, btc_sorted.batch_label
 
@@ -39,3 +41,9 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     saver.restore(sess, "./best_cnn_model/model.ckpt")
     print(sess.run(accuracy, {x: batch_x, label:batch_label}))
+    '''
+    a = sess.run(y4, {x: batch_x})
+    for i in range(len(a)):
+        print(a[i])
+        print(btc_data.data[i])
+    '''
