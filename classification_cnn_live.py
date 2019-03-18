@@ -1,7 +1,21 @@
 import tensorflow as tf
-from data import btc_sorted
+from data import public_client
 
-batch_x, batch_label = btc_sorted.batch_x, btc_sorted.batch_label
+reader = public_client.PublicClient()
+live_data = reader.get_product_historic_rates('btc-usd', granularity=3600)
+data = [None] * 300
+
+for i in range(300):
+    data[i] = live_data[i][1]
+
+print(data[0])
+min = min(data)
+max = max(data)
+
+for i in range(300):
+    data[i] = (data[i]-min)/(max-min)
+
+batch_x = [data]
 
 n_input = 300
 n_hidden1 = 100
@@ -37,5 +51,5 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
 saver = tf.train.Saver()
 with tf.Session() as sess:
-    saver.restore(sess, "./best_model/model.ckpt")
-    print(sess.run(accuracy, {x: batch_x, label:batch_label}))
+    saver.restore(sess, "./best_cnn_model/model.ckpt")
+    print(sess.run(y4, {x: batch_x}))
