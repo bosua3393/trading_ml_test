@@ -1,7 +1,8 @@
 import tensorflow as tf
 from data import btc_sorted
 from data import btc_data
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 batch_x, batch_label = btc_sorted.batch_x, btc_sorted.batch_label
 
@@ -41,9 +42,19 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     saver.restore(sess, "./best_cnn_model/model.ckpt")
     print(sess.run(accuracy, {x: batch_x, label:batch_label}))
-    '''
-    a = sess.run(y4, {x: batch_x})
-    for i in range(len(a)):
-        print(a[i])
-        print(btc_data.data[i])
-    '''
+
+    r = sess.run(y4, {x: batch_x})
+    a = [None]*len(r)
+    b = [None]*len(r)
+
+    for i in range(len(r)):
+        if r[i][0] > 0.5:
+            a[i] = btc_data.data[i]
+        else:
+            b[i] = btc_data.data[i]
+
+a = np.flip(a)
+b = np.flip(b)
+plt.plot(a)
+plt.plot(b)
+plt.show()
