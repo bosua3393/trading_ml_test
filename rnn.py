@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from data import btc_data
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM, TimeDistributedDense
+from tensorflow.keras.layers import Dense, LSTM
 from tensorflow.keras import optimizers
 
 
@@ -27,20 +27,21 @@ data = data.dropna()
 batch_x = np.array(data['norm_change'].values)
 batch_y = np.array(data['label'].values)
 
-batch_x = batch_x.reshape(1, 14949, 1)
-batch_y = batch_y.reshape(1, 14949, 1)
-
-print(batch_x, batch_y)
-
+batch_x = batch_x.reshape(14949, 1, 1)
+batch_y = batch_y.reshape(14949, 1)
 
 model = Sequential()
 
-model.add(LSTM(128, input_shape=(14949, 1), return_sequences=True))
+model.add(LSTM(128, input_shape=(1, 1), return_sequences=True, activation='relu'))
 
-model.add
+model.add(LSTM(128, input_shape=(1, 1), return_sequences=False, activation='relu'))
 
-opt = optimizers.Adam(lr=0.0001, decay=.000001)
+model.add(Dense(128, activation='relu'))
 
-model.compile(optimizer=opt, loss='sparse_categorical_crossentropy')
+model.add(Dense(1, activation='softmax'))
+
+opt = optimizers.Adam(lr=.001, decay=.000001)
+
+model.compile(optimizer=opt, loss='mean_squared_error', metrics=['accuracy'])
 
 model.fit(batch_x, batch_y, epochs=5)
