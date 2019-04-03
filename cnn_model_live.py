@@ -1,5 +1,6 @@
 import tensorflow as tf
 from data import public_client
+from tensorflow.keras.models import load_model
 
 reader = public_client.PublicClient()
 live_data = reader.get_product_historic_rates('btc-usd', granularity=3600)
