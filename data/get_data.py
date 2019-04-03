@@ -9,7 +9,7 @@ n_batch = 50
 start_time = 1552717954
 
 reader = PublicClient()
-f = open('btc_data.py', 'w+')
+f = open('data.py', 'w+')
 for i in range(n_batch):
     batch_end = DT.datetime.utcfromtimestamp(start_time - (i * candle * batch_size)).isoformat()
     batch_start = DT.datetime.utcfromtimestamp(start_time - ((i + 1) * candle * batch_size)).isoformat()

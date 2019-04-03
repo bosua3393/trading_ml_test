@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Dense, LSTM, TimeDistributed
 from tensorflow.keras import optimizers
 
 FUTURE = 24
-x_length = 24
+x_length = 300
 length = 14949 - x_length
 
 
@@ -43,11 +43,9 @@ batch_x, batch_y = data_processing(data['norm_change'].values, data['label'].val
 
 model = Sequential()
 
-model.add(LSTM(32, input_shape=(length, x_length), return_sequences=True, activation='sigmoid'))
+model.add(LSTM(32, input_shape=(length, x_length), return_sequences=True, activation='relu'))
 
-model.add(LSTM(32, input_shape=(length, x_length), return_sequences=True, activation='sigmoid'))
-
-model.add(TimeDistributed(Dense(12, activation='sigmoid')))
+model.add(LSTM(32, input_shape=(length, x_length), return_sequences=True, activation='relu'))
 
 model.add(TimeDistributed(Dense(1, activation='softmax')))
 
