@@ -2,7 +2,7 @@ from data import eth_sorted
 from data import btc_sorted
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM, TimeDistributed
+from tensorflow.keras.layers import Dense, LSTM, TimeDistributed, CuDNNLSTM
 import numpy as np
 
 data_x, data_label = np.array(eth_sorted.batch_x), np.array(eth_sorted.batch_label)
@@ -15,9 +15,9 @@ test_label = test_label.reshape(1, 5000, 2)
 
 model = Sequential()
 
-model.add(LSTM(128, input_shape=(5000, 300), return_sequences=True))
+model.add(CuDNNLSTM(32, input_shape=(5000, 300), return_sequences=True))
 
-model.add(LSTM(128, input_shape=(5000, 300), return_sequences=True))
+model.add(CuDNNLSTM(32, input_shape=(5000, 300), return_sequences=True))
 
 model.add(TimeDistributed(Dense(2, activation='softmax')))
 
