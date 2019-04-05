@@ -22,7 +22,7 @@ for i in range(300):
 
 batch_x = [[data]]
 
-model = load_model('keras/0.701600')
+model = load_model('keras_model/0.701600')
 
 r = model.predict(batch_x)
 
