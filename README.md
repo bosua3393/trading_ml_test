@@ -3,3 +3,7 @@
 Validation output:
 ------
 ![output_img](images/keras_model_validation.png)
+
+Other Validation output(private):
+------
+![output_img](images/validation_output.png)
